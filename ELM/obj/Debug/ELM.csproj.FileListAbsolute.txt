@@ -13,3 +13,5 @@ E:\Projects\ELM\ELM\obj\Debug\ELM.csproj.GenerateResource.Cache
 E:\Projects\ELM\ELM\obj\Debug\ELM.csproj.CoreCompileInputs.cache
 E:\Projects\ELM\ELM\obj\Debug\ELM.exe
 E:\Projects\ELM\ELM\obj\Debug\ELM.pdb
+E:\Projects\ELM\ELM\obj\Debug\ValidateWindow.g.cs
+E:\Projects\ELM\ELM\obj\Debug\ValidateWindow.baml

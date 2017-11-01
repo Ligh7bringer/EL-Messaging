@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ELM"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
-        
+        <Label Content="Message Header:" HorizontalAlignment="Left" Margin="202,74,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Label Content="Body:" HorizontalAlignment="Left" Margin="202,159,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.487,0.462" FontSize="14"/>
+        <TextBox x:Name="txtbox_header" MaxLines="1" HorizontalAlignment="Left" Height="23" Margin="202,105,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Width="372"/>
+        <Button x:Name="btn_add" Content="Add" HorizontalAlignment="Left" Margin="496,500,0,0" VerticalAlignment="Top" Width="75" FontSize="14" Click="btn_add_Click"/>
+        <Button x:Name="btn_clear" Content="Clear" HorizontalAlignment="Left" Margin="202,500,0,0" VerticalAlignment="Top" Width="75" FontSize="14" Click="btn_clear_Click"/>
+        <TextBox x:Name="txtbox_body"  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+         ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="173" 
+                  Margin="202,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="369" >
+        </TextBox>
+        <Label Content="Add a new message" HorizontalAlignment="Left" Margin="293,19,0,0" VerticalAlignment="Top" FontSize="16"/>
+
     </Grid>
 </Window>
