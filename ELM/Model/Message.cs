@@ -10,18 +10,16 @@ namespace ELM.Model
     {
         //private Type messageType;
         private string header;
-        private string body;
+        private string[] body;
         private MessageState currentState = null;
 
-        public Message(string header, string body)
+        public Message(string header, string[] body)
         {
-            if(String.IsNullOrEmpty(header) || String.IsNullOrEmpty(body))
-            {
-                throw new ArgumentNullException("Don't leave any fields empty!");
-            }
+           
             this.header = header;
             this.body = body;
             SetState();
+            CSVParser.ReadFile();
         }
 
         public void SetState()
@@ -29,7 +27,7 @@ namespace ELM.Model
             Console.WriteLine(header[0]);
             if (header[0].ToString().Equals("S"))
             {
-                currentState = new SmsState(this);
+                currentState = new SMSState(this);
             }
             else if (header[0].ToString().Equals("E"))
             {
@@ -61,19 +59,7 @@ namespace ELM.Model
             }
         }
 
-        public string Body { get => body;
-            set
-            {
-                if (!String.IsNullOrEmpty(value))
-                {
-                    body = value;
-                }
-                else
-                {
-                    throw new ArgumentNullException("A message has to have a body!");
-                }
-            }
-        }
+        public string[] Body { get => body; set => body = value; }
         
         public MessageState CurrentState { get => currentState; set => currentState = value;  }
     }

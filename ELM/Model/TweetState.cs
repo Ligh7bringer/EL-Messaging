@@ -16,11 +16,18 @@ namespace ELM.Model
         public TweetState(Message message)
         {
             this.Message = message;
+            this.Type = "Tweet";
         }
 
         public override void ProcessMessage()
         {
-            throw new NotImplementedException();
+            this.Id = StringHelper.GetMessageID(Message.Header);
+            this.Sender = StringHelper.Clean(Message.Body[0]);
+            this.MessageText = StringHelper.ReplaceTextSpeak(Message.Body[1]);
+
+
+
+            JSONHelper.WriteTweet(this);
         }
     }
 }

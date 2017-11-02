@@ -24,14 +24,23 @@ namespace ELM
         public MainWindow()
         {
             InitializeComponent();
+            txtbox_body.AcceptsReturn = true;
+
         }
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
             Message m;
+            string[] body = new string[3];
             try
             {
-                m = new Message(txtbox_header.Text.ToString(), txtbox_body.Text.ToString());
+                // For each line in the rich text box...
+                for (int i = 0; i < txtbox_body.LineCount; i++)
+                {
+                    // Show a message box with its contents.
+                    body[i] = txtbox_body.GetLineText(i);
+                }
+                m = new Message(txtbox_header.Text.ToString(), body);
             }
             catch (Exception ex)
             {

@@ -10,49 +10,31 @@ using System.IO;
 
 namespace ELM.Model
 {
-    class SmsState : MessageState
+    class SMSState : MessageState
     {
-        private string Type = "SMS";
-        private string id;
-        private string sender;
-        private string body;
-
-        public string Id { get => id; set => id = value; }
-        public string Sender { get => sender; set => sender = value; }
-        public string Body { get => body; set => body = value; }
-
-
-        public SmsState(MessageState state) : this(state.Message)
+        public SMSState(MessageState state) : this(state.Message)
         {
 
         }
 
-        public SmsState(Message message)
+        public SMSState(Message message)
         {
             this.Message = message;
+            this.Type = "SMS";
         }
 
         public override void ProcessMessage()
         {
-            string id = Message.Header.Substring(1, 9);
-            string sender = Message.Body.Substring(0, 13);
-            string message = Message.Body.Substring(13, Message.Body.Length-13);
+            this.Id = StringHelper.GetMessageID(Message.Header);
+            this.Sender = StringHelper.Clean(Message.Body[0]);
+            this.MessageText = StringHelper.ReplaceTextSpeak(Message.Body[1]);
 
-            this.Id = id;
-            this.Sender = sender;
-            this.Body = message;
+            if (this.MessageText.Length > 140)
+            {
+                throw new ArgumentOutOfRangeException("Sms text cannot be longer than 140 characters!");
+            }
 
-            JObject data = new JObject(
-                new JProperty("Type", this.Type),
-                new JProperty("ID", this.Id),
-                new JProperty("Sender", this.Sender),
-                new JProperty("Message", this.Body));
-
-            string path = System.Environment.CurrentDirectory + "\\JSON\\" + this.id + ".json";
-            
-            File.WriteAllText(path , data.ToString());
-
-
+            JSONHelper.WriteSMS(this);
         }
 
 
