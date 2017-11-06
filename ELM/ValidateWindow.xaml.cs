@@ -25,5 +25,20 @@ namespace ELM
             InitializeComponent();
             txtbox_message.Text = m.CurrentState.ToString();
         }
+
+        private void btn_add_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mw = new MainWindow();
+
+            this.Close();
+            mw.ShowDialog();
+        }
+
+        private void btn_close_Click(object sender, RoutedEventArgs e)
+        {
+            StatsWindow sw = new StatsWindow();
+            this.Close();        
+            sw.ShowDialog();
+        }
     }
 }

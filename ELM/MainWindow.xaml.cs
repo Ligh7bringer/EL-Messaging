@@ -49,14 +49,29 @@ namespace ELM
                 return;
             }
 
+            ClearText();
+
             ValidateWindow validate = new ValidateWindow(m);
+
+            this.Close();
             validate.ShowDialog();
         }
 
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {
+            ClearText();
+        }
+
+        private void ClearText()
+        {
             txtbox_header.Clear();
             txtbox_body.Clear();
+        }
+
+        private void btn_stats_Click(object sender, RoutedEventArgs e)
+        {
+            StatsWindow sw = new StatsWindow();
+            sw.ShowDialog();
         }
     }
 }

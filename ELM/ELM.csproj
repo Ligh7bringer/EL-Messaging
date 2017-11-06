@@ -64,6 +64,9 @@
     <Compile Include="Model\SMSState.cs" />
     <Compile Include="Model\StringHelper.cs" />
     <Compile Include="Model\TweetState.cs" />
+    <Compile Include="StatsWindow.xaml.cs">
+      <DependentUpon>StatsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidateWindow.xaml.cs">
       <DependentUpon>ValidateWindow.xaml</DependentUpon>
     </Compile>
@@ -79,6 +82,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="StatsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ValidateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

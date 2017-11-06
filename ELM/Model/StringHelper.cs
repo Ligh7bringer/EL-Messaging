@@ -10,11 +10,13 @@ namespace ELM.Model
 {
     static class StringHelper
     {
-        private static Dictionary<String, int> hashTags = new Dictionary<string, int>();
+        private static Dictionary<String, int> hashTags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
         private static ArrayList mentions = new ArrayList();
 
-        public static Dictionary<string, int> HashTags { get => HashTags; set => HashTags = value; }
-        public static ArrayList Mentions { get => mentions; set => mentions = value; }
+        public static Dictionary<String, int> GetHashTags()
+        {
+            return hashTags;
+        }
 
         public static string GetMessageID(this string text)
         {

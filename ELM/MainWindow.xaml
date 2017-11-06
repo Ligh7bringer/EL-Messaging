@@ -17,6 +17,7 @@
         </TextBox>
         <Label Content="Add a new message" HorizontalAlignment="Left" Margin="293,19,0,0" VerticalAlignment="Top" FontSize="16"/>
         <TextBox x:Name="txtbox_header" HorizontalAlignment="Left" Height="23" Margin="202,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="369"/>
+        <Button x:Name="btn_stats" Content="Stats" HorizontalAlignment="Left" Margin="10,500,0,0" VerticalAlignment="Top" Width="75" Click="btn_stats_Click"/>
 
     </Grid>
 </Window>

@@ -17,3 +17,5 @@ E:\Projects\ELM\ELM\obj\Debug\ValidateWindow.g.cs
 E:\Projects\ELM\ELM\obj\Debug\ValidateWindow.baml
 E:\Projects\ELM\ELM\bin\Debug\Newtonsoft.Json.dll
 E:\Projects\ELM\ELM\bin\Debug\Newtonsoft.Json.xml
+E:\Projects\ELM\ELM\obj\Debug\StatsWindow.g.cs
+E:\Projects\ELM\ELM\obj\Debug\StatsWindow.baml
