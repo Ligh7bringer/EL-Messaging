@@ -1,0 +1,6 @@
+{
+  "Type": "Tweet",
+  "ID": "545454546",
+  "Sender": "@user",
+  "Message": "mentioning @another@user"
+}

@@ -23,8 +23,7 @@ namespace ELM
         internal ValidateWindow(Message m)
         {
             InitializeComponent();
-            lbl_message.Content = m.CurrentState.ToString() + "\n body: " + m.Body;
-
+            txtbox_message.Text = m.CurrentState.ToString();
         }
     }
 }

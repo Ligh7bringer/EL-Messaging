@@ -29,12 +29,29 @@ namespace ELM.Model
             this.Sender = StringHelper.Clean(Message.Body[0]);
             this.MessageText = StringHelper.ReplaceTextSpeak(Message.Body[1]);
 
-            if (this.MessageText.Length > 140)
+            if (Message.Body.Length > 2)
             {
-                throw new ArgumentOutOfRangeException("Sms text cannot be longer than 140 characters!");
+                string text = StringHelper.GetMessageBody(Message.Body, 2);
+                Console.WriteLine(text);
+                if (text.Length < 141)
+                    this.MessageText = StringHelper.ReplaceTextSpeak(text);
+                else
+                    throw new ArgumentOutOfRangeException("SMS text cannot be longer than 140 characters!");
+            }
+            else
+            {
+                this.MessageText = StringHelper.ReplaceTextSpeak(Message.Body[1]);
             }
 
             JSONHelper.WriteSMS(this);
+        }
+
+        public override string ToString()
+        {
+            return "Type: " + this.Type +
+                "\nID: " + this.Id +
+                "\nSender: " + this.Sender +
+                "\nMessage text: " + this.MessageText;
         }
 
 

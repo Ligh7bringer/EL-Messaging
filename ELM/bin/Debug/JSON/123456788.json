@@ -1,0 +1,6 @@
+{
+  "Type": "Tweet",
+  "ID": "123456788",
+  "Sender": "@user",
+  "Message": "this is a #test"
+}

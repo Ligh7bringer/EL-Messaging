@@ -21,7 +21,6 @@ namespace ELM.Model
                 {
                     var splits = rd.ReadLine().Split(',');
                     words.Add(splits[0], splits[1]);
-                    //Console.WriteLine(splits[0] + " = " + splits[1]);
                 }
             }
 

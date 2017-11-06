@@ -19,7 +19,6 @@ namespace ELM.Model
             this.header = header;
             this.body = body;
             SetState();
-            CSVParser.ReadFile();
         }
 
         public void SetState()

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ValidateWindow" Height="600" Width="600">
     <Grid>
-        <Label x:Name="lbl_message" Content="Label" HorizontalAlignment="Left" Margin="262,271,0,0" VerticalAlignment="Top"/>
-
+        <Label Content="Processed message" HorizontalAlignment="Left" Margin="222,47,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBlock x:Name="txtbox_message" Margin="126,138,126,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="330" Width="340" FontSize="14" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

@@ -30,8 +30,9 @@ namespace ELM
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
-            Message m;
-            string[] body = new string[3];
+            Message m = null;
+            string[] body = new string[30];
+
             try
             {
                 // For each line in the rich text box...
