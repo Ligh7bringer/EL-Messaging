@@ -89,7 +89,7 @@ namespace ELM.Model
             return String.Empty;
         }
 
-        public static void CountHashTags(this string text)
+        public static void GetHashTags(this string text)
         {
             if (!String.IsNullOrWhiteSpace(text))
             {
@@ -98,10 +98,9 @@ namespace ELM.Model
 
                 foreach (Match m in matches)
                 {
-                    int val;
                     if (hashTags.ContainsKey(m.Value))
                     {
-                        hashTags.TryGetValue(m.Value, out val);
+                        hashTags.TryGetValue(m.Value, out int val);
                         hashTags[m.Value] = val + 1;
                     }
                     else
@@ -138,9 +137,10 @@ namespace ELM.Model
             {
                 Regex regx = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)",
                                                  RegexOptions.IgnoreCase);
-                MatchCollection mactches = regx.Matches(text);
 
-                foreach (Match match in mactches)
+                var matches = regx.Matches(text);
+
+                foreach (Match match in matches)
                 {
                     text = text.Replace(match.Value, "<URL Quarantined>");
                     Console.WriteLine("URL FOUND!!!");
@@ -154,9 +154,7 @@ namespace ELM.Model
         {
             if(!String.IsNullOrWhiteSpace(text))
             {
-                var r = new Regex(@"^(\d|\d[-0-9]*\d)$");
-                if (r.IsMatch(text))
-                    return true;
+                return Regex.IsMatch(text, @"^\d(\d|(?<!-)-)*\d$|^\d$");
             }
 
             return false;

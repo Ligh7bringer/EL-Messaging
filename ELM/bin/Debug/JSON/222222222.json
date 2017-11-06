@@ -1,0 +1,7 @@
+{
+  "Type": "Standard Email Message",
+  "ID": "222222222",
+  "Sender": "sender",
+  "Subject": "subject",
+  "Email Text": "long email with URLS <URL Quarantined> and more <URL Quarantined> and more https:// stackoverflow.com/questions and even more https:// stackoverflow.com/questions"
+}

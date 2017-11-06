@@ -40,12 +40,27 @@ namespace ELM.Model
 
         public static void WriteEmail(EmailState email)
         {
-            JObject data = new JObject(
-                new JProperty("Type", email.Type),
-                new JProperty("ID", email.Id),
-                new JProperty("Sender", email.Sender),
-                new JProperty("Subject", email.Subject),
-                new JProperty("Email Text", email.MessageText));
+            JObject data;
+            if (email.Type.Equals("Standard Email Message"))
+            {
+                data = new JObject(
+                    new JProperty("Type", email.Type),
+                    new JProperty("ID", email.Id),
+                    new JProperty("Sender", email.Sender),
+                    new JProperty("Subject", email.Subject),
+                    new JProperty("Email Text", email.MessageText));
+            }
+            else
+            {
+                data = new JObject(
+                   new JProperty("Type", email.Type),
+                   new JProperty("ID", email.Id),
+                   new JProperty("Sender", email.Sender),
+                   new JProperty("Subject", email.Subject),
+                   new JProperty("Sport Centre Code", email.CentreCode),
+                   new JProperty("Incident", email.Incident),
+                   new JProperty("Email Text", email.MessageText));
+            }
 
             string filename = path + email.Id + ".json";
 

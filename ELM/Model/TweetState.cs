@@ -21,24 +21,19 @@ namespace ELM.Model
 
         public override void ProcessMessage()
         {
-            this.Id = StringHelper.GetMessageID(Message.Header);
-            this.Sender = StringHelper.Clean(Message.Body[0]);
+            //extract ID and sender
+            this.Id = Message.Header.GetMessageID();
+            this.Sender = Message.Body[0].Clean();
+       
+            string text = StringHelper.GetMessageBody(Message.Body, 2);
 
-            if (Message.Body.Length > 2)
-            {
-                string text = StringHelper.GetMessageBody(Message.Body, 2);
-                if (text.Length < 141)
-                    this.MessageText = StringHelper.ReplaceTextSpeak(text);
-                else
-                    throw new ArgumentOutOfRangeException("Tweet text cannot be longer than 140 characters!");
-            }
+            if (text.Length < 141)
+                this.MessageText = StringHelper.ReplaceTextSpeak(text);
             else
-            {
-                this.MessageText = StringHelper.ReplaceTextSpeak(Message.Body[1]);
-            }
+                throw new ArgumentOutOfRangeException("Tweet text cannot be longer than 140 characters!");
 
-            StringHelper.CountHashTags(this.MessageText);
-            StringHelper.StoreMentions(this.MessageText);
+            MessageText.GetHashTags();
+            MessageText.StoreMentions();
 
             JSONHelper.WriteTweet(this);
         }

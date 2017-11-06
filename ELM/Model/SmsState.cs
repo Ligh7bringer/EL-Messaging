@@ -25,24 +25,16 @@ namespace ELM.Model
 
         public override void ProcessMessage()
         {
-            this.Id = StringHelper.GetMessageID(Message.Header);
-            this.Sender = StringHelper.Clean(Message.Body[0]);
-            this.MessageText = StringHelper.ReplaceTextSpeak(Message.Body[1]);
+            this.Id = Message.Header.GetMessageID();
+            this.Sender = Message.Body[0].Clean();
 
-            if (Message.Body.Length > 2)
-            {
-                string text = StringHelper.GetMessageBody(Message.Body, 2);
-                Console.WriteLine(text);
-                if (text.Length < 141)
-                    this.MessageText = StringHelper.ReplaceTextSpeak(text);
-                else
-                    throw new ArgumentOutOfRangeException("SMS text cannot be longer than 140 characters!");
-            }
+            string text = StringHelper.GetMessageBody(Message.Body, 2);
+
+            if (text.Length < 141)
+                this.MessageText = StringHelper.ReplaceTextSpeak(text);
             else
-            {
-                this.MessageText = StringHelper.ReplaceTextSpeak(Message.Body[1]);
-            }
-
+                throw new ArgumentOutOfRangeException("SMS text cannot be longer than 140 characters!");
+           
             JSONHelper.WriteSMS(this);
         }
 

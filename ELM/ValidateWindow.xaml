@@ -8,6 +8,8 @@
         Title="ValidateWindow" Height="600" Width="600">
     <Grid>
         <Label Content="Processed message" HorizontalAlignment="Left" Margin="222,47,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <TextBlock x:Name="txtbox_message" Margin="126,138,126,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="330" Width="340" FontSize="14" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="txtbox_message" Margin="58,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="355" Width="467" FontSize="14" 
+                   HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+         ScrollViewer.VerticalScrollBarVisibility="Auto" />
     </Grid>
 </Window>

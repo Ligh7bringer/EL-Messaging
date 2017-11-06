@@ -25,6 +25,7 @@ namespace ELM.Model
 
         public string Subject { get => subject; set => subject = value; }
         public string CentreCode { get => centreCode; set => centreCode = value; }
+        public string Incident { get => incident; set => incident = value; }
 
         public override void ProcessMessage()
         {
@@ -37,42 +38,54 @@ namespace ELM.Model
             else
                 this.Subject = StringHelper.Clean(Message.Body[1]);
 
-            //
-            if(this.Subject.Contains("SIR")) {
+            //handle SIRs
+            if (this.Subject.Contains("SIR"))
+            {
                 this.Type = "Email - Significant Incident Report";
-                this.CentreCode = Message.Body[2];
-                Console.WriteLine(this.CentreCode);
-                if (StringHelper.ValidateCentreCode(this.CentreCode))
-                    Console.WriteLine("CENTRE CODE VALID!!!");
-            }
+                this.CentreCode = Message.Body[2].Clean();
 
-            //message text
-            if (Message.Body.Length > 3)
+                if (!CentreCode.ValidateCentreCode())
+                    throw new Exception("Invalid centre code!");
+
+                this.Incident = Message.Body[3].Clean();
+                                
+                this.MessageText = StringHelper.GetMessageBody(Message.Body, 4);
+                
+            }
+            else //handle regular emails
             {
-                string text = StringHelper.GetMessageBody(Message.Body, 3);
-
-                if (text.Length < 1049)
-                    this.MessageText = text;
-                else
-                    throw new ArgumentOutOfRangeException("Email text cannot be longer than 1048 characters!");
-            }
-            else
-            {
-                this.MessageText = Message.Body[2];
+                //message text
+                this.MessageText = Message.Body.GetMessageBody(3);             
             }
 
-            this.MessageText = StringHelper.RemoveURLs(this.MessageText);
+            if (this.MessageText.Length > 1049)
+                throw new Exception("Email text cannot be longer than 1048 characters!");
 
+            this.MessageText = MessageText.RemoveURLs();
+        
             JSONHelper.WriteEmail(this);           
         }
 
         public override string ToString()
         {
-            return "Type: " + this.Type +
-                "\nID: " + this.Id +
-                "\nSender: " + this.Sender +
-                "\nSubject: " + this.Subject + 
-                "\nMessage text: " + this.MessageText;
+            if (this.Type.Equals("Standard Email Message"))
+            {
+                return "Type: " + this.Type +
+                        "\nID: " + this.Id +
+                        "\nSender: " + this.Sender +
+                        "\nSubject: " + this.Subject +
+                        "\nMessage text: " + this.MessageText;
+            }
+            else
+            {
+                return "Type: " + this.Type +
+                        "\nID: " + this.Id +
+                        "\nSender: " + this.Sender +
+                        "\nSubject: " + this.Subject +
+                        "\nCentre code: " + this.CentreCode +
+                        "\nIncident: " + this.Incident +
+                        "\nMessage text: " + this.MessageText;
+            }
         }
     }
 }

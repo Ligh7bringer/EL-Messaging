@@ -1,0 +1,7 @@
+{
+  "Type": "Standard Email Message",
+  "ID": "666666666",
+  "Sender": "foo@bar.com",
+  "Subject": "subject",
+  "Email Text": "<URL Quarantined> <URL Quarantined> <URL Quarantined> <URL Quarantined>"
+}
