@@ -1,7 +1,0 @@
-{
-  "Type": "Standard Email Message",
-  "ID": "123456788",
-  "Sender": "sender@mail.com",
-  "Subject": "subject",
-  "Email Text": "long email which contains URLS so let's start https:// stackoverflow.com/questions/3086289/deleting asdasdad more text here and now asdasd asd  <URL Quarantined> questions/3086289/deleting asdasd <URL Quarantined> questions/3086289/deleting"
-}

@@ -1,7 +1,7 @@
 {
   "Type": "Standard Email Message",
   "ID": "789789789",
-  "Sender": "sender",
+  "Sender": "sender@mail.com",
   "Subject": "subject",
-  "Email Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque  risus lorem, efficitur ut felis viverra, tincidunt faucibus urna.  Phasellus at est fringilla, egestas erat sed, laoreet arcu. Nam sit  amet erat sed odio dapibus efficitur. Ut dignissim et sapien vitae  pharetra. Proin eu varius erat. Aenean luctus laoreet magna non  convallis. Phasellus molestie neque at tellus mattis, sit amet  dapibus libero sodales. Morbi gravida eros at venenatis hendrerit.  Ut in diam malesuada, vehicula eros vel, finibus risus. Etiam  condimentum mi vitae mi euismod, eu maximus ipsum  accumsan. Praesent dapibus egestas purus, eget pulvinar orci  convallis et.Lorem ipsum dolor sit amet, consectetur adipiscing  elit. Quisque risus lorem, efficitur ut felis viverra, tincidunt  faucibus urna. Phasell"
+  "Email Text": "SIR incident adasd"
 }

@@ -24,6 +24,8 @@ namespace ELM.Model
             //extract ID and sender
             this.Id = Message.Header.GetMessageID();
             this.Sender = Message.Body[0].Clean();
+            if (!this.Sender.ValidateTwitterUser())
+                throw new Exception("Invalid twitter username!");
        
             string text = StringHelper.GetMessageBody(Message.Body, 2);
 

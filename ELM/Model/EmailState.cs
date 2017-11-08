@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,16 +32,25 @@ namespace ELM.Model
         {
             this.Id = StringHelper.GetMessageID(Message.Header);
             this.Sender = StringHelper.Clean(Message.Body[0]);
+            if(!this.Sender.ValidateEmailAdress())
+            {
+                throw new Exception("Invalid email address!");
+            }
 
             //subject
             if (Message.Body[1].Length > 20)
-                throw new ArgumentOutOfRangeException("Subject cannot be more than 20 characters");
+                throw new Exception("Subject cannot be more than 20 characters");
             else
                 this.Subject = StringHelper.Clean(Message.Body[1]);
 
             //handle SIRs
             if (this.Subject.Contains("SIR"))
             {
+                if(!this.Subject.ValidateDate())
+                {
+                    throw new Exception("Invalid date!");
+                }
+
                 this.Type = "Email - Significant Incident Report";
                 this.CentreCode = Message.Body[2].Clean();
 
@@ -48,8 +58,10 @@ namespace ELM.Model
                     throw new Exception("Invalid centre code!");
 
                 this.Incident = Message.Body[3].Clean();
+                if (!Incident.ValidateIncident())
+                    throw new Exception("Invalid nature of incident!");
                                 
-                this.MessageText = StringHelper.GetMessageBody(Message.Body, 4);
+                this.MessageText = StringHelper.GetMessageBody(Message.Body, 5);
                 
             }
             else //handle regular emails
@@ -61,7 +73,7 @@ namespace ELM.Model
             if (this.MessageText.Length > 1049)
                 throw new Exception("Email text cannot be longer than 1048 characters!");
 
-            this.MessageText = MessageText.RemoveURLs();
+            this.MessageText = MessageText.RemoveURLs(this.Id);
         
             JSONHelper.WriteEmail(this);           
         }

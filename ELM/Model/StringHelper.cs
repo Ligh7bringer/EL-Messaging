@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,17 +11,23 @@ namespace ELM.Model
 {
     static class StringHelper
     {
-        private static Dictionary<String, int> hashTags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
+        private static Dictionary<string, int> hashTags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
         private static ArrayList mentions = new ArrayList();
+        private static Dictionary<string, ArrayList> Quarantined = new Dictionary<string, ArrayList>();
 
         public static Dictionary<String, int> GetHashTags()
         {
             return hashTags;
         }
 
+        public static ArrayList GetMentions()
+        {
+            return mentions;
+        }
+
         public static string GetMessageID(this string text)
         {
-            if(!string.IsNullOrWhiteSpace(text))
+            if (!string.IsNullOrWhiteSpace(text))
             {
                 return text.Substring(1, 9);
             }
@@ -63,8 +70,8 @@ namespace ELM.Model
                     }
                 }
             }
-                       
-            return text;      
+
+            return text;
         }
 
         public static string GetMessageBody(this string[] text, int startAt)
@@ -72,7 +79,7 @@ namespace ELM.Model
             string edited;
             if (text.Length > 3)
             {
-                edited = Clean(text[startAt-1]);
+                edited = Clean(text[startAt - 1]);
                 for (int i = startAt; i < text.Length; i++)
                 {
                     if (!String.IsNullOrWhiteSpace(text[i]))
@@ -112,7 +119,7 @@ namespace ELM.Model
                 }
             }
 
-            foreach(KeyValuePair<string, int> entry in hashTags)
+            foreach (KeyValuePair<string, int> entry in hashTags)
             {
                 Console.WriteLine("key: " + entry.Key + " value: " + entry.Value);
             }
@@ -133,9 +140,9 @@ namespace ELM.Model
             }
         }
 
-        public static string RemoveURLs(this string text)
+        public static string RemoveURLs(this string text, string id)
         {
-            if(!String.IsNullOrWhiteSpace(text))
+            if (!String.IsNullOrWhiteSpace(text))
             {
                 Regex regx = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)",
                                                  RegexOptions.IgnoreCase);
@@ -145,7 +152,16 @@ namespace ELM.Model
                 foreach (Match match in matches)
                 {
                     text = text.Replace(match.Value, "<URL Quarantined>");
-                    Console.WriteLine("URL FOUND!!!");
+                    if (Quarantined.ContainsKey(id))
+                    {
+                        Quarantined[id].Add(match.Value);
+                        Console.WriteLine("------Quarantined: " + id + " " + match.Value);
+                    }
+                    else
+                    {
+                        Quarantined.Add(id, new ArrayList { match.Value });
+                        Console.WriteLine("------Quarantined: " + id + " " + match.Value);
+                    }
                 }
             }
 
@@ -154,12 +170,63 @@ namespace ELM.Model
 
         public static Boolean ValidateCentreCode(this string text)
         {
-            if(!String.IsNullOrWhiteSpace(text))
+            if (!String.IsNullOrWhiteSpace(text))
             {
                 return Regex.IsMatch(text, @"^\d(\d|(?<!-)-)*\d$|^\d$");
             }
 
             return false;
+        }
+
+        public static Boolean ValidatePhoneNumber(this string text)
+        {
+            if (!String.IsNullOrWhiteSpace(text))
+            {
+                return Regex.IsMatch(text, @"^\+?(\d[\d-. ]+)?(\([\d-. ]+\))?[\d-. ]+\d$");
+            }
+
+            return false;
+        }
+
+        public static bool ValidateEmailAdress(this string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+        public static bool ValidateTwitterUser(this string text)
+        {
+            if (!String.IsNullOrWhiteSpace(text))
+            {
+                return Regex.IsMatch(text, @"(?<=@)\w+");
+            }
+
+            return false;
+        }
+
+        public static bool ValidateIncident(this string text)
+        {
+            ArrayList validIncidents = new ArrayList { "Theft of Properties", "Staff Attack", "Device Damage", "Raid",
+                                    "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident",
+                                     "Sport Injury", "Personal Info Leak"};
+
+            return validIncidents.Contains(text);
+        }
+
+        public static bool ValidateDate(this string text)
+        {
+            var regex = new Regex(@"(\d+)[-.\/](\d+)[-.\/](\d+)");
+            var matches = regex.Matches(text);
+
+            return regex.IsMatch(text);
         }
 
     }

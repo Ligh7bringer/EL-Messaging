@@ -5,10 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ELM"
         mc:Ignorable="d"
-        Title="StatsWindow" Height="600" Width="600">
+        Title="Stats" Height="600" Width="600">
     <Grid>
-        <Label Content="Trending on Twitter" HorizontalAlignment="Left" Margin="63,37,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <TextBlock x:Name="txtbox_trending" HorizontalAlignment="Left" Margin="63,93,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Height="340" Width="238"/>
+        <Label Content="Trending on Twitter" HorizontalAlignment="Left" Margin="78,37,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBlock x:Name="txtbox_trending" TextAlignment="Center" HorizontalAlignment="Left" Margin="34,93,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Height="340" Width="238"/>
+        <Label Content="Twitter mentions" HorizontalAlignment="Left" Margin="358,37,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBlock x:Name="txtbox_mentions" TextAlignment="Center" HorizontalAlignment="Left" Margin="312,93,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Height="340" Width="238"/>
+        <Separator HorizontalAlignment="Left" Height="19" Margin="12,276,0,0" VerticalAlignment="Top" Width="568" RenderTransformOrigin="0.5,0.5">
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
 
     </Grid>
 </Window>

@@ -27,13 +27,17 @@ namespace ELM.Model
         {
             this.Id = Message.Header.GetMessageID();
             this.Sender = Message.Body[0].Clean();
+            if(!this.Sender.ValidatePhoneNumber())
+            {
+                throw new Exception("Invalid phone number!");
+            }
 
             string text = StringHelper.GetMessageBody(Message.Body, 2);
 
             if (text.Length < 141)
                 this.MessageText = StringHelper.ReplaceTextSpeak(text);
             else
-                throw new ArgumentOutOfRangeException("SMS text cannot be longer than 140 characters!");
+                throw new Exception("SMS text cannot be longer than 140 characters!");
            
             JSONHelper.WriteSMS(this);
         }

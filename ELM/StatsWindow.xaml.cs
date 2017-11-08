@@ -28,6 +28,11 @@ namespace ELM
             {
                 txtbox_trending.Text += "\n#" + entry.Key + " (mentions: " + entry.Value + ")";
             }
+
+            foreach(var entry in StringHelper.GetMentions())
+            {
+                txtbox_mentions.Text += "\n@" + entry;
+            }
         }
     }
 }

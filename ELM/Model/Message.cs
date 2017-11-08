@@ -38,8 +38,9 @@ namespace ELM.Model
             }
             else
             {
-                throw new ArgumentException("Invalid header.");
+                throw new Exception("Invalid header.");
             }
+
             currentState.ProcessMessage();
         }
 
@@ -53,12 +54,24 @@ namespace ELM.Model
                     header = value;
                 } else
                 {
-                    throw new ArgumentNullException("A message has to have a header!");
+                    throw new Exception("A message has to have a header!");
                 }
             }
         }
 
-        public string[] Body { get => body; set => body = value; }
+        public string[] Body { get => body;
+            set
+            {
+                if (!String.IsNullOrEmpty(value[0]))
+                {
+                    body = value;
+                }
+                else
+                {
+                    throw new Exception("A message has to have a body!");
+                }
+            }
+        }
         
         public MessageState CurrentState { get => currentState; set => currentState = value;  }
     }
