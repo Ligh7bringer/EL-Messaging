@@ -23,13 +23,15 @@ namespace ELM
         public StatsWindow()
         {
             InitializeComponent();
+            txtbox_mentions.IsReadOnly = true;
+            txtbox_trending.IsReadOnly = true;
 
-            foreach(var entry in StringHelper.GetHashTags().OrderByDescending(key => key.Value))
+            foreach(var entry in StringHelper.HashTags.OrderByDescending(key => key.Value))
             {
-                txtbox_trending.Text += "\n#" + entry.Key + " (mentions: " + entry.Value + ")";
+                txtbox_trending.Text += "\n#" + entry.Key + " (used: " + entry.Value + " times)";
             }
 
-            foreach(var entry in StringHelper.GetMentions())
+            foreach(var entry in StringHelper.Mentions)
             {
                 txtbox_mentions.Text += "\n@" + entry;
             }

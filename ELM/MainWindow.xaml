@@ -17,8 +17,8 @@
         </TextBox>
         <Label Content="Add a new message" HorizontalAlignment="Left" Margin="293,19,0,0" VerticalAlignment="Top" FontSize="16"/>
         <TextBox x:Name="txtbox_header" HorizontalAlignment="Left" Height="23" Margin="202,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="275"/>
-        <Button x:Name="btn_stats" Content="View Stats" HorizontalAlignment="Left" Margin="342,500,0,0" VerticalAlignment="Top" Width="84" Height="23" Click="btn_stats_Click_1"/>
         <Button x:Name="btn_openFile" Content="Open file" HorizontalAlignment="Left" Margin="496,103,0,0" VerticalAlignment="Top" Width="75" Height="23" RenderTransformOrigin="0.5,0.5" Click="btn_openFile_Click"/>
+        <Button x:Name="btn_stats" Content="View stats" HorizontalAlignment="Left" Margin="341,500,0,0" VerticalAlignment="Top" Width="81" Click="btn_stats_Click" Height="23"/>
 
     </Grid>
 </Window>

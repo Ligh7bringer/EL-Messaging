@@ -14,8 +14,7 @@ namespace ELM.Model
         private MessageState currentState = null;
 
         public Message(string header, string[] body)
-        {
-           
+        {          
             this.header = header;
             this.body = body;
             SetState();

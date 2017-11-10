@@ -10,7 +10,7 @@ namespace ELM.Model
 {
     static class FileParser
     {
-        private static Dictionary<String, String> words = new Dictionary<String, String>();
+        private static Dictionary<String, String> words;
         private static ArrayList messages = new ArrayList();
 
         private static string path = System.Environment.CurrentDirectory;
@@ -20,6 +20,7 @@ namespace ELM.Model
 
         public static void Initialise()
         {
+            words = new Dictionary<String, String>();
             using (var rd = new StreamReader(path + @"\textspeak\textwords.csv"))
             {
                 while (!rd.EndOfStream)
@@ -39,86 +40,147 @@ namespace ELM.Model
             }            
         }
 
-        public static void ReadFile(String fileName)
+        public static void ReadMessages(string fileName)
         {
             using (var rd = new StreamReader(fileName))
             {
                 while (!rd.EndOfStream)
                 {
                     string line = rd.ReadLine();
-                    Console.WriteLine(line);
+                    string[] lines = new string[30];
 
-                    if(String.IsNullOrWhiteSpace(line))
+                    if (String.IsNullOrWhiteSpace(line))
                     {
                         continue;
                     }
-                    if (line[0].ToString().Equals("S"))
+                    if (!String.IsNullOrWhiteSpace(line) && line.ValidateHeader())
                     {
-                        string id = line;
-                        string sender = rd.ReadLine();
-                        if (!sender.ValidatePhoneNumber())
-                            throw new Exception("Invalid phone number in Message with ID: " + id);
-                        string text = rd.ReadLine();
-                        text = text.ReplaceTextSpeak();
-                        
-                        SMSState sms = new SMSState(id, sender, text);
-                        Console.WriteLine(sms.ToString());
-                        Messages.Add(sms);
-                    }
-                    if(line[0].ToString().Equals("T"))
-                    {
-                        string id = line;
-                        string sender = rd.ReadLine();
-                        if (!sender.ValidateTwitterUser())
-                            throw new Exception("Invalid twitter user name in Tweet with ID: " + id);
-                        string text = rd.ReadLine();
-                        text = text.ReplaceTextSpeak();
-
-                        TweetState tweet = new TweetState(id, sender, text);
-                        Console.WriteLine(tweet.ToString());
-                        Messages.Add(tweet);
-                    } 
-                    if(line[0].ToString().Equals("E"))
-                    {
-                        string id = line;
-                        
-                        string sender = rd.ReadLine();
-                        if(!sender.ValidateEmailAdress())
-                            throw new Exception("Invalid sender email address in Email with ID: " + id);
-
-                        string subject = rd.ReadLine();
-                        if(subject.Contains("SIR"))
+                        lines[0] = line;
+                        for(int i = 1; i < lines.Length; i++)
                         {
-                            if (!subject.ValidateDate())
-                                throw new Exception("Invalid date in Email with ID: " + id);
+                            string tmp = rd.ReadLine();
+                            if (String.IsNullOrWhiteSpace(tmp) || tmp.ValidateHeader())
+                                break;
 
-                            string centreCode = rd.ReadLine();
-                            if(!centreCode.ValidateCentreCode())
-                                throw new Exception("Invalid Centre Code in Email with ID: " + id);
+                            lines[i] = tmp;
+                            Console.WriteLine(lines[0]);
+                        }
 
-                            string incident = rd.ReadLine();
-                            if(!incident.ValidateIncident())
-                                throw new Exception("Invalid Nature of Incident in Email with ID: " + id);
+                        if(lines[0][0].ToString().Equals("S"))
+                        {
+                            string id = lines[0];
+                            string sender = lines[1];
+                            if (!sender.ValidatePhoneNumber())
+                                throw new Exception("Invalid phone number in Message with ID: " + id);
+                            string text = StringHelper.GetMessageBody(lines, 3);
+                            if (text.Length > 140)
+                                throw new Exception("SMS cannot be longer than 140 characters!");
 
-                            string body = rd.ReadLine();
-                            body = body.RemoveURLs(id);
+                            text = text.ReplaceTextSpeak();
 
-                            EmailState sir = new EmailState(id, sender, subject, centreCode, incident, body);
-                            Messages.Add(sir);
-                            continue;
-                        }                        
-                        
-                        string text = rd.ReadLine();
-                        text = text.RemoveURLs(id);
+                            SMSState sms = new SMSState(id, sender, text);
+                            Console.WriteLine(sms.ToString());
+                            Messages.Add(sms);                            
+                        }
+                        if(lines[0][0].ToString().Equals("T"))
+                        {
+                            string id = lines[0];
+                            string sender = lines[1];
+                            if (!sender.ValidateTwitterUser())
+                                throw new Exception("Invalid twitter user name in Tweet with ID: " + id);
+                            string text = StringHelper.GetMessageBody(lines, 3);
+                            text = text.ReplaceTextSpeak();
+                            if (text.Length > 140)
+                                throw new Exception("SMS cannot be longer than 140 characters!");
 
-                        EmailState email = new EmailState(id, sender, subject, text);
-                        Console.WriteLine(email.ToString());
-                        Messages.Add(email);                  
+                            text.StoreMentions();
+                            text.GetHashTags();
+
+                            TweetState tweet = new TweetState(id, sender, text);
+                            Console.WriteLine(tweet.ToString());
+                            Messages.Add(tweet);
+                        }
+                        if(lines[0][0].ToString().Equals("E"))
+                        {
+                            string id = lines[0];
+
+                            string sender = lines[1];
+                            if (!sender.ValidateEmailAdress())
+                                throw new Exception("Invalid email address!");
+
+                            if (!sender.ValidateEmailAdress())
+                                throw new Exception("Invalid sender email address in Email with ID: " + id);
+
+                            string subject = lines[2];
+                            if (subject.Length > 20)
+                                throw new Exception("Subject cannot be longer than 20 characters!");
+
+                            if (subject.Contains("SIR"))
+                            {
+                                if (!subject.ValidateDate())
+                                    throw new Exception("Invalid date in Email with ID: " + id);
+
+                                string centreCode = lines[3];
+                                if (!centreCode.ValidateCentreCode())
+                                    throw new Exception("Invalid Centre Code in Email with ID: " + id);
+
+                                string incident = lines[4];
+                                if (!incident.ValidateIncident())
+                                    throw new Exception("Invalid Nature of Incident in Email with ID: " + id);
+
+                                string body = StringHelper.GetMessageBody(lines, 6);
+                                if (body.Length > 1048)
+                                    throw new Exception("Emails cannot be longer than 1048 characters!");
+
+                                body = body.RemoveURLs(id);
+
+                                EmailState sir = new EmailState(id, sender, subject, centreCode, incident, body);
+                                StringHelper.AddToSIR(centreCode, incident);
+                                Messages.Add(sir);
+                                continue;
+                            }
+
+                            string text = StringHelper.GetMessageBody(lines, 4);
+                            if (text.Length > 1048)
+                                throw new Exception("Emails cannot be longer than 1048 characters!");
+
+                            text = text.RemoveURLs(id);
+
+                            EmailState email = new EmailState(id, sender, subject, text);
+                            Console.WriteLine(email.ToString());
+                            Messages.Add(email);
+                        }
+
+                        lines = new string[30];
                     }
                 }
             }
+
+            foreach(MessageState _m in messages)
+            {
+                WriteJson(_m);
+            }
         }
 
-       
+        private static void WriteJson(MessageState ms)
+        {
+            if(ms.Id[0].ToString().Equals("S"))
+            {                
+                JSONHelper.WriteSMS((SMSState)ms);
+            }
+            if (ms.Id[0].ToString().Equals("T"))
+            {
+                JSONHelper.WriteTweet((TweetState)ms);
+            }
+            if (ms.Id[0].ToString().Equals("E"))
+            {
+                JSONHelper.WriteEmail((EmailState)ms);
+            }
+        }
+
+        public static void Reset()
+        {
+            messages = new ArrayList();
+        }
     }
 }

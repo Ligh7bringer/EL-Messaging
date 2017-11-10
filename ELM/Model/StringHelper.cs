@@ -20,47 +20,13 @@ namespace ELM.Model
                                     "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident",
                                      "Sport Injury", "Personal Info Leak"};
 
-
-        public static Dictionary<String, int> GetHashTags()
-        {
-            return hashTags;
-        }
-
-        public static ArrayList GetMentions()
-        {
-            return mentions;
-        }
-
-        public static string GetMessageID(this string text)
-        {
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                return text.Substring(1, 9);
-            }
-
-            return String.Empty;
-        }
-
-        public static string GetUntilSpace(this string text, string stopAt = " ")
-        {
-            if (!String.IsNullOrWhiteSpace(text))
-            {
-                int charLocation = text.IndexOf(stopAt, StringComparison.Ordinal);
-
-                if (charLocation > 0)
-                {
-                    return text.Substring(0, charLocation);
-                }
-            }
-
-            return String.Empty;
-        }
+        public static Dictionary<string, int> HashTags { get => hashTags; }
+        public static ArrayList Mentions { get => mentions; }
 
         public static string Clean(this string text)
         {
             return text.Replace("\r\n", "");
         }
-
 
         public static string ReplaceTextSpeak(this string text)
         {
@@ -113,19 +79,19 @@ namespace ELM.Model
 
                 foreach (Match m in matches)
                 {
-                    if (hashTags.ContainsKey(m.Value))
+                    if (HashTags.ContainsKey(m.Value))
                     {
-                        hashTags.TryGetValue(m.Value, out int val);
-                        hashTags[m.Value] = val + 1;
+                        HashTags.TryGetValue(m.Value, out int val);
+                        HashTags[m.Value] = val + 1;
                     }
                     else
                     {
-                        hashTags.Add(m.Value, 1);
+                        HashTags.Add(m.Value, 1);
                     }
                 }
             }
 
-            foreach (KeyValuePair<string, int> entry in hashTags)
+            foreach (KeyValuePair<string, int> entry in HashTags)
             {
                 Console.WriteLine("key: " + entry.Key + " value: " + entry.Value);
             }
@@ -140,7 +106,7 @@ namespace ELM.Model
 
                 foreach (Match m in matches)
                 {
-                    mentions.Add(m.Value);
+                    Mentions.Add(m.Value);
                     Console.WriteLine(m.Value);
                 }
             }
@@ -264,6 +230,9 @@ namespace ELM.Model
 
         public static bool ValidateHeader(this string text)
         {
+            if (String.IsNullOrWhiteSpace(text))
+                return false;
+
             return (text.Length == 10 && (text[0].ToString().Equals("T") || text[0].ToString().Equals("S") || text[0].ToString().Equals("E"))) ;
         }
     }

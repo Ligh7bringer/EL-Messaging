@@ -21,7 +21,7 @@ namespace ELM.Model
         public EmailState(Message message)
         {
             this.Message = message;
-            
+            this.Type = "Standard Email Message";
         }
 
         public EmailState(string id, string sender, string subject, string text)
@@ -46,7 +46,7 @@ namespace ELM.Model
 
         public override void ProcessMessage()
         {
-            this.Id = StringHelper.GetMessageID(Message.Header);
+            this.Id = Message.Header;
             this.Sender = StringHelper.Clean(Message.Body[0]);
             if(!this.Sender.ValidateEmailAdress())
             {

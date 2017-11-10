@@ -35,8 +35,8 @@ namespace ELM
             Message m = null;
             string[] body = new string[30];
 
-            try
-            {
+            //try
+            //{
                 // For each line in the rich text box...
                 for (int i = 0; i < txtbox_body.LineCount; i++)
                 {
@@ -44,12 +44,12 @@ namespace ELM
                     body[i] = txtbox_body.GetLineText(i);
                 }
                 m = new Message(txtbox_header.Text.ToString(), body);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+                //MessageBox.Show(ex.Message);
+               // return;
+            //}
 
             ClearText();
 
@@ -70,39 +70,37 @@ namespace ELM
             txtbox_body.Clear();
         }
 
-        private void btn_stats_Click(object sender, RoutedEventArgs e)
-        {
-            StatsWindow sw = new StatsWindow();
-            sw.ShowDialog();
-        }
-
-        private void btn_stats_Click_1(object sender, RoutedEventArgs e)
-        {
-            StatsWindow sw = new StatsWindow();
-            sw.ShowDialog();
-        }
-
         private void btn_openFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text files (*.txt)|*.txt";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
             if (openFileDialog.ShowDialog() == true)
             {
                 try
                 {
-                    FileParser.ReadFile(openFileDialog.FileName);
+                    FileParser.ReadMessages(openFileDialog.FileName);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
+                    return;
                 }
             }
 
             foreach(var m in FileParser.Messages)
             {
-                MessageBox.Show(m.ToString());
+                MessageBox.Show(m.ToString(), "Processed message");
             }
+
+            FileParser.Reset();
+        }
+
+        private void btn_stats_Click(object sender, RoutedEventArgs e)
+        {
+            StatsWindow sw = new StatsWindow();
+            sw.ShowDialog();
         }
     }
 }

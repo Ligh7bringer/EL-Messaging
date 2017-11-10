@@ -33,7 +33,7 @@ namespace ELM.Model
 
         public override void ProcessMessage()
         {
-            this.Id = Message.Header.GetMessageID();
+            this.Id = Message.Header;
             this.Sender = Message.Body[0].Clean();
             if(!this.Sender.ValidatePhoneNumber())
             {
