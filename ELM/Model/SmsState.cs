@@ -23,6 +23,14 @@ namespace ELM.Model
             this.Type = "SMS";
         }
 
+        public SMSState(string ID, string sender, string text)
+        {
+            this.Type = "SMS";
+            this.Id = ID;
+            this.Sender = sender;
+            this.MessageText = text;
+        }
+
         public override void ProcessMessage()
         {
             this.Id = Message.Header.GetMessageID();

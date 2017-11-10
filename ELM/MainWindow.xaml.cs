@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ELM.Model;
+using Microsoft.Win32;
+using System.IO;
 
 namespace ELM
 {
@@ -25,7 +27,7 @@ namespace ELM
         {
             InitializeComponent();
             txtbox_body.AcceptsReturn = true;
-
+            FileParser.Initialise();
         }
 
         private void btn_add_Click(object sender, RoutedEventArgs e)
@@ -72,6 +74,35 @@ namespace ELM
         {
             StatsWindow sw = new StatsWindow();
             sw.ShowDialog();
+        }
+
+        private void btn_stats_Click_1(object sender, RoutedEventArgs e)
+        {
+            StatsWindow sw = new StatsWindow();
+            sw.ShowDialog();
+        }
+
+        private void btn_openFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    FileParser.ReadFile(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            foreach(var m in FileParser.Messages)
+            {
+                MessageBox.Show(m.ToString());
+            }
         }
     }
 }

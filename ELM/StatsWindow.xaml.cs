@@ -34,5 +34,15 @@ namespace ELM
                 txtbox_mentions.Text += "\n@" + entry;
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + @"\lists\SIRs.txt");
+        }
+
+        private void btn_quarantined_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + @"\lists\URLs.txt");
+        }
     }
 }

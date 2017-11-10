@@ -21,7 +21,23 @@ namespace ELM.Model
         public EmailState(Message message)
         {
             this.Message = message;
+            
+        }
+
+        public EmailState(string id, string sender, string subject, string text)
+        {
             this.Type = "Standard Email Message";
+            this.Id = id;
+            this.Sender = sender;
+            this.Subject = subject;
+            this.MessageText = text;
+        }
+
+        public EmailState(string id, string sender, string subject, string centreCode, string incident, string text) : this(id, sender, subject, text)
+        {
+            this.Type = "SIR";        
+            this.CentreCode = centreCode;
+            this.Incident = incident;
         }
 
         public string Subject { get => subject; set => subject = value; }
@@ -62,7 +78,8 @@ namespace ELM.Model
                     throw new Exception("Invalid nature of incident!");
                                 
                 this.MessageText = StringHelper.GetMessageBody(Message.Body, 5);
-                
+
+                StringHelper.AddToSIR(this.CentreCode, this.Incident);
             }
             else //handle regular emails
             {
@@ -99,5 +116,6 @@ namespace ELM.Model
                         "\nMessage text: " + this.MessageText;
             }
         }
+
     }
 }

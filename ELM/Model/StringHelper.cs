@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -14,6 +15,11 @@ namespace ELM.Model
         private static Dictionary<string, int> hashTags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
         private static ArrayList mentions = new ArrayList();
         private static Dictionary<string, ArrayList> Quarantined = new Dictionary<string, ArrayList>();
+        private static Dictionary<string, ArrayList> SIR = new Dictionary<string, ArrayList>();
+        private static ArrayList ValidIncidents = new ArrayList { "Theft of Properties", "Staff Attack", "Device Damage", "Raid",
+                                    "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident",
+                                     "Sport Injury", "Personal Info Leak"};
+
 
         public static Dictionary<String, int> GetHashTags()
         {
@@ -60,7 +66,7 @@ namespace ELM.Model
         {
             if (!String.IsNullOrEmpty(text))
             {
-                foreach (KeyValuePair<string, string> entry in CSVParser.ReadFile())
+                foreach (KeyValuePair<string, string> entry in FileParser.Words)
                 {
                     if (text.Contains(entry.Key))
                     {
@@ -149,6 +155,9 @@ namespace ELM.Model
 
                 var matches = regx.Matches(text);
 
+                string path = System.Environment.CurrentDirectory + @"\lists\urls.txt";
+                string write = "";
+                
                 foreach (Match match in matches)
                 {
                     text = text.Replace(match.Value, "<URL Quarantined>");
@@ -156,12 +165,16 @@ namespace ELM.Model
                     {
                         Quarantined[id].Add(match.Value);
                         Console.WriteLine("------Quarantined: " + id + " " + match.Value);
+                        write = id + ": " + match.Value + System.Environment.NewLine;
                     }
                     else
                     {
                         Quarantined.Add(id, new ArrayList { match.Value });
                         Console.WriteLine("------Quarantined: " + id + " " + match.Value);
+                        write = id + ": " + match.Value + System.Environment.NewLine; ;
                     }
+
+                    File.AppendAllText(path, write);
                 }
             }
 
@@ -214,20 +227,44 @@ namespace ELM.Model
 
         public static bool ValidateIncident(this string text)
         {
-            ArrayList validIncidents = new ArrayList { "Theft of Properties", "Staff Attack", "Device Damage", "Raid",
-                                    "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident",
-                                     "Sport Injury", "Personal Info Leak"};
+            if(!String.IsNullOrWhiteSpace(text))
+                return ValidIncidents.Contains(text);
 
-            return validIncidents.Contains(text);
+            return false;
         }
 
         public static bool ValidateDate(this string text)
         {
             var regex = new Regex(@"(\d+)[-.\/](\d+)[-.\/](\d+)");
-            var matches = regex.Matches(text);
 
             return regex.IsMatch(text);
         }
+    
+        public static void AddToSIR(string centreCode, string incident) 
+        {
+            if(!String.IsNullOrWhiteSpace(centreCode) && !String.IsNullOrWhiteSpace(incident))
+            {
+                if(SIR.ContainsKey(centreCode))
+                {
+                    SIR[centreCode].Add(incident);
+                    Console.WriteLine("------SAVING: " + centreCode + " " + incident);
+                }
+                else
+                {
+                    SIR.Add(centreCode, new ArrayList { incident });
+                    Console.WriteLine("------SAVING: " + centreCode + " " + incident);
+                }
+            }
 
+            string path = System.Environment.CurrentDirectory + @"\lists\SIRs.txt";
+            string text = centreCode + ": " + incident + Environment.NewLine;
+            Console.WriteLine(text);
+            File.AppendAllText(path, text);
+        }
+
+        public static bool ValidateHeader(this string text)
+        {
+            return (text.Length == 10 && (text[0].ToString().Equals("T") || text[0].ToString().Equals("S") || text[0].ToString().Equals("E"))) ;
+        }
     }
 }

@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\CSVParser.cs" />
+    <Compile Include="Model\FileParser.cs" />
     <Compile Include="Model\EmailState.cs" />
     <Compile Include="Model\JSONHelper.cs" />
     <Compile Include="Model\MessageState.cs" />

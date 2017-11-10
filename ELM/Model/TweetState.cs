@@ -19,6 +19,14 @@ namespace ELM.Model
             this.Type = "Tweet";
         }
 
+        public TweetState(string id, string sender, string text)
+        {
+            this.Type = "Tweet";
+            this.Id = id;
+            this.Sender = sender;
+            this.MessageText = text;
+        }
+
         public override void ProcessMessage()
         {
             //extract ID and sender

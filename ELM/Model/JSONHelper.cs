@@ -10,7 +10,7 @@ namespace ELM.Model
 {
     static class JSONHelper
     {
-        private static string path = System.Environment.CurrentDirectory + "\\JSON\\"; 
+        private static string path = System.Environment.CurrentDirectory + @"\JSON\"; 
 
         public static void WriteSMS(SMSState sms)
         {

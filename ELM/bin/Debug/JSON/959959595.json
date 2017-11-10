@@ -1,9 +1,6 @@
 {
-  "Type": "Email - Significant Incident Report",
+  "Type": "Tweet",
   "ID": "959959595",
-  "Sender": "foo@bar.com",
-  "Subject": "SIR asd",
-  "Sport Centre Code": "6-6-6",
-  "Incident": "Raid",
-  "Email Text": "asdasdasd"
+  "Sender": "@asd",
+  "Message": "FISH <\"First in still here\">"
 }
