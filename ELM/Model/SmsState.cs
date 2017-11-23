@@ -10,8 +10,10 @@ using System.IO;
 
 namespace ELM.Model
 {
+    //defines a message of Type sms
     class SMSState : MessageState
     {
+        //chained constructor, pass the actual message
         public SMSState(MessageState state) : this(state.Message)
         {
 
@@ -23,6 +25,7 @@ namespace ELM.Model
             this.Type = "SMS";
         }
 
+        //constructor used when messages are read from a file
         public SMSState(string ID, string sender, string text)
         {
             this.Type = "SMS";
@@ -31,6 +34,8 @@ namespace ELM.Model
             this.MessageText = text;
         }
 
+        //overrides the method in the parent class
+        //processes and validates an SMS
         public override void ProcessMessage()
         {
             this.Id = Message.Header;
@@ -50,6 +55,7 @@ namespace ELM.Model
             JSONHelper.WriteSMS(this);
         }
 
+        //overrides ToString, used when displaying processed messages
         public override string ToString()
         {
             return "Type: " + this.Type +

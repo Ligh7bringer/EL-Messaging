@@ -8,10 +8,9 @@
         Title="Processed message" Height="600" Width="600">
     <Grid>
         <Label Content="Processed message" HorizontalAlignment="Left" Margin="222,47,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <TextBlock x:Name="txtbox_message" Margin="63,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="355" Width="467" FontSize="14" 
-                   HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-         ScrollViewer.VerticalScrollBarVisibility="Auto" TextAlignment="Center"/>
-        <Button x:Name="btn_add" Content="Add another message" HorizontalAlignment="Left" Margin="63,501,0,0" VerticalAlignment="Top" Width="130" RenderTransformOrigin="0.2,0.8" Height="34" Click="btn_add_Click"/>
+        <TextBlock x:Name="txtbox_message" Margin="63,113,0,0" TextWrapping="Wrap" Height="355" Width="467" FontSize="14" 
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+              TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Button x:Name="btn_close" Content="Close" HorizontalAlignment="Left" Margin="400,501,0,0" VerticalAlignment="Top" Width="130" RenderTransformOrigin="0.2,0.8" Height="34" Click="btn_close_Click"/>
     </Grid>
 </Window>

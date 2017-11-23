@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace ELM.Model
 {
+    //defines a message
     class Message
     {
-        //private Type messageType;
+        //properties of the class
         private string header;
         private string[] body;
         private MessageState currentState = null;
 
+        //constructor which accepts the ID and the message text of the message
         public Message(string header, string[] body)
         {          
             this.header = header;
@@ -20,9 +22,16 @@ namespace ELM.Model
             SetState();
         }
 
+        //sets the state of the message depending on the first letter of the header
+        //throws an exception when the header doesnt contain 9 numbers
+        //throws an exception when the header doesnt start with S, T or E
         public void SetState()
         {
             Console.WriteLine(header[0]);
+            if(!header.ValidateNumbers())
+            {
+                throw new Exception("Header must be in the format S/T/E123456789!");
+            }
             if (header[0].ToString().Equals("S"))
             {
                 currentState = new SMSState(this);
@@ -43,6 +52,8 @@ namespace ELM.Model
             currentState.ProcessMessage();
         }
 
+        //getter and setter for header
+        //throws an exception when header is null
         public string Header
         {
             get => header;
@@ -58,6 +69,8 @@ namespace ELM.Model
             }
         }
 
+        //getter and setter for body
+        //throws an exception when body is null
         public string[] Body { get => body;
             set
             {
@@ -72,6 +85,7 @@ namespace ELM.Model
             }
         }
         
+        //getter and setter for the state of the message
         public MessageState CurrentState { get => currentState; set => currentState = value;  }
     }
 }

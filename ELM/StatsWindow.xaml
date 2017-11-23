@@ -21,8 +21,9 @@
                 </TransformGroup>
             </Separator.RenderTransform>
         </Separator>
-        <Button Content="SIRs" HorizontalAlignment="Left" Margin="431,523,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <Button x:Name="btn_quarantined" Content="Quarantined URLS" HorizontalAlignment="Left" Margin="64,523,0,0" VerticalAlignment="Top" Width="109" Click="btn_quarantined_Click"/>
+        <Button Content="SIRs" HorizontalAlignment="Left" Margin="258,523,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button x:Name="btn_quarantined" Content="Quarantined URLS" HorizontalAlignment="Left" Margin="34,523,0,0" VerticalAlignment="Top" Width="109" Click="btn_quarantined_Click"/>
+        <Button x:Name="btn_close" Content="Close" HorizontalAlignment="Left" Margin="475,523,0,0" VerticalAlignment="Top" Width="75" Click="btn_close_Click"/>
 
     </Grid>
 </Window>

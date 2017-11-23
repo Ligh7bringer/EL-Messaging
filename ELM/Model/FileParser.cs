@@ -8,16 +8,22 @@ using System.Threading.Tasks;
 
 namespace ELM.Model
 {
+    //handles reading of external files
     static class FileParser
     {
+        //data structs where processed messages and words are stored
         private static Dictionary<String, String> words;
         private static ArrayList messages = new ArrayList();
 
+        //path to where the files are read from
         private static string path = System.Environment.CurrentDirectory;
 
+        //getters
         public static Dictionary<string, string> Words { get => words; }
         public static ArrayList Messages { get => messages; }
 
+        //initialises the Dictionary where textspeak is stored
+        //reads the file and stores the abbreviation as Key, the full phrase as Value
         public static void Initialise()
         {
             words = new Dictionary<String, String>();
@@ -40,6 +46,8 @@ namespace ELM.Model
             }            
         }
 
+        //reads messages from a text file
+        //any number of messages can be read and processed as long as there is at least 1 (or more) empty lines between them
         public static void ReadMessages(string fileName)
         {
             using (var rd = new StreamReader(fileName))
@@ -162,6 +170,7 @@ namespace ELM.Model
             }
         }
 
+        //calls the correct method from JSONHelper depending on the message type to write the messages in a JSON file
         private static void WriteJson(MessageState ms)
         {
             if(ms.Id[0].ToString().Equals("S"))
@@ -178,6 +187,7 @@ namespace ELM.Model
             }
         }
 
+        //deletes everything from the messages array list
         public static void Reset()
         {
             messages = new ArrayList();

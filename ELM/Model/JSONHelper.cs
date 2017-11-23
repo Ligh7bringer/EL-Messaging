@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 
 namespace ELM.Model
 {
+    //handles writing of messages in JSON files
     static class JSONHelper
     {
-        private static string path = System.Environment.CurrentDirectory + @"\JSON\"; 
+        //path to where everything will be stored
+        private static string path = Environment.CurrentDirectory + @"\JSON\"; 
 
+        //writes an message of type SMS
         public static void WriteSMS(SMSState sms)
         {
             JObject data = new JObject(
@@ -25,6 +28,7 @@ namespace ELM.Model
             File.WriteAllText(filename, data.ToString());
         }
 
+        //writes an message of type Tweet
         public static void WriteTweet(TweetState tweet)
         {
             JObject data = new JObject(
@@ -38,6 +42,7 @@ namespace ELM.Model
             File.WriteAllText(filename, data.ToString());
         }
 
+        //writes an message of type Email
         public static void WriteEmail(EmailState email)
         {
             JObject data;

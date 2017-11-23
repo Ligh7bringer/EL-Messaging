@@ -26,52 +26,55 @@ namespace ELM
         public MainWindow()
         {
             InitializeComponent();
-            txtbox_body.AcceptsReturn = true;
-            FileParser.Initialise();
+            txtbox_body.AcceptsReturn = true; //allow the user to move to a new line in the text box
+            FileParser.Initialise(); //initalise the text speak dictionary
         }
 
+        //when the add message button is clicked
         private void btn_add_Click(object sender, RoutedEventArgs e)
         {
             Message m = null;
             string[] body = new string[30];
 
-            //try
-            //{
-                // For each line in the rich text box...
+            try
+            {
+                // For each line in the text box
                 for (int i = 0; i < txtbox_body.LineCount; i++)
                 {
-                    // Show a message box with its contents.
+                    //store it in an array
                     body[i] = txtbox_body.GetLineText(i);
                 }
-                m = new Message(txtbox_header.Text.ToString(), body);
-            //}
-            //catch (Exception ex)
-            //{
-                //MessageBox.Show(ex.Message);
-               // return;
-            //}
+                m = new Message(txtbox_header.Text.ToString(), body); //create a message
+            }
+           catch (Exception ex) { 
+               //display errors if any 
+               MessageBox.Show(ex.Message);
+               return;
+            }
 
-            ClearText();
+            ClearText(); 
 
-            ValidateWindow validate = new ValidateWindow(m);
-
-            this.Close();
-            validate.ShowDialog();
+            ValidateWindow validate = new ValidateWindow(m); //create a new validate window
+            validate.ShowDialog(); //display it
         }
 
+        //clear both text boxes when clear button is clicked
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {
             ClearText();
         }
 
+        //clears both text boxes in the window
         private void ClearText()
         {
             txtbox_header.Clear();
             txtbox_body.Clear();
         }
 
+        //when open file button is clicked
         private void btn_openFile_Click(object sender, RoutedEventArgs e)
         {
+            //allow the user to select a file
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text files (*.txt)|*.txt";
             openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -80,23 +83,27 @@ namespace ELM
             {
                 try
                 {
-                    FileParser.ReadMessages(openFileDialog.FileName);
+                    FileParser.ReadMessages(openFileDialog.FileName); //try reading the selected file
                 }
                 catch (Exception ex)
                 {
+                    //display errors if any
                     MessageBox.Show(ex.Message);
                     return;
                 }
             }
 
+            //if everything is ok, display each message in a text box
             foreach(var m in FileParser.Messages)
             {
                 MessageBox.Show(m.ToString(), "Processed message");
             }
 
+            //reset 
             FileParser.Reset();
         }
 
+        //display the stats window
         private void btn_stats_Click(object sender, RoutedEventArgs e)
         {
             StatsWindow sw = new StatsWindow();

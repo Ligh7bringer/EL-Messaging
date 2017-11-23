@@ -23,22 +23,13 @@ namespace ELM
         internal ValidateWindow(Message m)
         {
             InitializeComponent();
-            txtbox_message.Text = m.CurrentState.ToString();
+            txtbox_message.Text = m.CurrentState.ToString(); //display the passed message 
         }
 
-        private void btn_add_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mw = new MainWindow();
-
-            this.Close();
-            mw.ShowDialog();
-        }
-
+        //close this window
         private void btn_close_Click(object sender, RoutedEventArgs e)
         {
-            StatsWindow sw = new StatsWindow();
             this.Close();        
-            sw.ShowDialog();
         }
     }
 }

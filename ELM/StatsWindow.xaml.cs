@@ -23,9 +23,11 @@ namespace ELM
         public StatsWindow()
         {
             InitializeComponent();
+            //set the textboxes to not editable
             txtbox_mentions.IsReadOnly = true;
             txtbox_trending.IsReadOnly = true;
 
+            //display hashtags and mentions stored in StringHelper
             foreach(var entry in StringHelper.HashTags.OrderByDescending(key => key.Value))
             {
                 txtbox_trending.Text += "\n#" + entry.Key + " (used: " + entry.Value + " times)";
@@ -37,14 +39,21 @@ namespace ELM
             }
         }
 
+        //open the file where SIRs are stored
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + @"\lists\SIRs.txt");
         }
 
+        //open the file where quarantined URLs are stored
         private void btn_quarantined_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(System.Environment.CurrentDirectory + @"\lists\URLs.txt");
+        }
+
+        private void btn_close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

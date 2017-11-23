@@ -10,8 +10,11 @@ using System.Threading.Tasks;
 
 namespace ELM.Model
 {
+    //extension class for strings
+    //adds methods used for validation of user input
     static class StringHelper
     {
+        //data structures where hashtags, mentions, quarantined URLS, SIRs and valid incidents are stored
         private static Dictionary<string, int> hashTags = new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
         private static ArrayList mentions = new ArrayList();
         private static Dictionary<string, ArrayList> Quarantined = new Dictionary<string, ArrayList>();
@@ -20,32 +23,37 @@ namespace ELM.Model
                                     "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident",
                                      "Sport Injury", "Personal Info Leak"};
 
+        //getters
         public static Dictionary<string, int> HashTags { get => hashTags; }
         public static ArrayList Mentions { get => mentions; }
 
+        //removes \r\n from the end of a string (added when Enter is pressed to move to a new line in a text box)
         public static string Clean(this string text)
         {
             return text.Replace("\r\n", "");
-        }
+        }        
 
+        //expands abbreviations in message text
         public static string ReplaceTextSpeak(this string text)
         {
             if (!String.IsNullOrEmpty(text))
             {
-                foreach (KeyValuePair<string, string> entry in FileParser.Words)
+                foreach (string str in text.Split(" ".ToCharArray()))
                 {
-                    if (text.Contains(entry.Key))
+                    if (FileParser.Words.ContainsKey(str))
                     {
-                        Console.WriteLine("Found one!");
-                        text = text.Replace(entry.Key, entry.Key + " <" + entry.Value + ">");
+                        Console.WriteLine("----------ABBREVIATION: " + str);
+                        text = text.Replace(str, str + " <" + FileParser.Words[str] + ">");
                         continue;
                     }
                 }
+
             }
 
             return text;
         }
 
+        //puts the whole message body in one string (as opposed to it being in an array of lines)
         public static string GetMessageBody(this string[] text, int startAt)
         {
             string edited;
@@ -70,6 +78,7 @@ namespace ELM.Model
             return String.Empty;
         }
 
+        //counts and stores hashtags in a dictionary
         public static void GetHashTags(this string text)
         {
             if (!String.IsNullOrWhiteSpace(text))
@@ -97,6 +106,7 @@ namespace ELM.Model
             }
         }
 
+        //stores mentions in an array list
         public static void StoreMentions(this string text)
         {
             if (!String.IsNullOrWhiteSpace(text))
@@ -112,6 +122,7 @@ namespace ELM.Model
             }
         }
 
+        //finds, removes and stores URLs in an external file
         public static string RemoveURLs(this string text, string id)
         {
             if (!String.IsNullOrWhiteSpace(text))
@@ -147,6 +158,8 @@ namespace ELM.Model
             return text;
         }
 
+        //returns true if center code is in the correct format
+        //return false if it is not
         public static Boolean ValidateCentreCode(this string text)
         {
             if (!String.IsNullOrWhiteSpace(text))
@@ -157,6 +170,8 @@ namespace ELM.Model
             return false;
         }
 
+        //returns true if phone number is in the correct format
+        //return false if it is not
         public static Boolean ValidatePhoneNumber(this string text)
         {
             if (!String.IsNullOrWhiteSpace(text))
@@ -167,6 +182,8 @@ namespace ELM.Model
             return false;
         }
 
+        //returns true if email address is in the correct format
+        //return false if it is not
         public static bool ValidateEmailAdress(this string emailaddress)
         {
             try
@@ -181,6 +198,8 @@ namespace ELM.Model
             }
         }
 
+        //returns true if twitter username is in the correct format
+        //return false if it is not
         public static bool ValidateTwitterUser(this string text)
         {
             if (!String.IsNullOrWhiteSpace(text))
@@ -191,6 +210,8 @@ namespace ELM.Model
             return false;
         }
 
+        //returns true if nature of incident is in the correct format
+        //return false if it is not
         public static bool ValidateIncident(this string text)
         {
             if(!String.IsNullOrWhiteSpace(text))
@@ -199,13 +220,16 @@ namespace ELM.Model
             return false;
         }
 
+        //returns true if date is in the correct format
+        //return false if it is not
         public static bool ValidateDate(this string text)
         {
             var regex = new Regex(@"(\d+)[-.\/](\d+)[-.\/](\d+)");
 
             return regex.IsMatch(text);
         }
-    
+
+        //writes an SIR ID and nature of incident to an external file
         public static void AddToSIR(string centreCode, string incident) 
         {
             if(!String.IsNullOrWhiteSpace(centreCode) && !String.IsNullOrWhiteSpace(incident))
@@ -228,12 +252,31 @@ namespace ELM.Model
             File.AppendAllText(path, text);
         }
 
+        //returns true if header is in the correct format
+        //return false if it is not
         public static bool ValidateHeader(this string text)
         {
             if (String.IsNullOrWhiteSpace(text))
                 return false;
 
             return (text.Length == 10 && (text[0].ToString().Equals("T") || text[0].ToString().Equals("S") || text[0].ToString().Equals("E"))) ;
+        }
+
+        //returns true if header contains exactly 9 numbers
+        //return false if it doesn't
+        public static bool ValidateNumbers(this string text)
+        {
+            if (String.IsNullOrWhiteSpace(text))
+                return false;
+
+            if (text.Length < 10)
+                return false;
+
+            var regex = new Regex("^\\d{9}$");        
+            text = text.Substring(1, 9);
+
+            Console.WriteLine("------------HEADER: " + text);
+            return regex.IsMatch(text);
         }
     }
 }
